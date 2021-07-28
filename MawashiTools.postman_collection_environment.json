@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "163f026d-3ab8-4af2-ae99-47f8dd3f0338",
+		"name": "MawashiTools",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NewAccount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.environment.set(\"username\", pm.response.json().data.username);\r",
+							"\r",
+							"\r",
+							"let password = JSON.parse(pm.request.body.raw).password;\r",
+							"pm.environment.set(\"password\", password);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$guid}}@gmail.com\",\r\n    \"password\": \"625318622\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dev.mawashi.tools:8080/api/rest/v1.0/auth/signup",
+					"protocol": "http",
+					"host": [
+						"dev",
+						"mawashi",
+						"tools"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rest",
+						"v1.0",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.environment.get(\"username\");\r",
+							"pm.environment.get(\"password\");\r",
+							"\r",
+							"pm.environment.set(\"token\", pm.response.json().data.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"{{username}}\",\r\n\"password\":\"{{password}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dev.mawashi.tools:8080/api/rest/v1.0/auth/signin",
+					"protocol": "http",
+					"host": [
+						"dev",
+						"mawashi",
+						"tools"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rest",
+						"v1.0",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.environment.get(\"token\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://dev.mawashi.tools:8080/api/rest/v1.0/",
+					"protocol": "http",
+					"host": [
+						"dev",
+						"mawashi",
+						"tools"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rest",
+						"v1.0",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
